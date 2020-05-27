@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useReducer, useRef } from 'react';
 import logo from './logo.svg';
 import image from './newyork1.jpg'
 import './App.css';
@@ -8,27 +8,43 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useForm } from "react-hook-form";
+import Tooltip from 'react-bootstrap/Tooltip';
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from 'react-bootstrap/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 
+// eslint-disable-next-line
 function App() {
     const { register, handleSubmit, watch, errors } = useForm();
     const onSubmit = data => {
-
         console.log(data);
     }
+    const [show, setShow] = useState(false);
+    const [target, setTarget] = useState(null);
+    const popover = (
+        <Popover id="popover-basic">
+            <Popover.Title as="h3">My Popover</Popover.Title>
+            <Popover.Content>
+               This is a picture of New York City.
+        </Popover.Content>
+        </Popover>
+    );
+
     return (
         <div className="App" >
 
             <header className="App-header" style={{ backgroundColor: "#70a7ff" }}>
                 <body>
-                    <h2>Welcome to some (very basic) React testing!</h2>
+                    <h2 style={{ float: "center" }}>Welcome to some (very basic) React testing!</h2>
+                    <p>Hover over the image below to see a popover created using <a href="https://react-bootstrap.github.io/components/overlays/#popovers" target="_blank">React Bootstrap</a>.</p>
+                    <img src={logo} style={{ float: "right" }} className="App-logo" alt="logo" />
 
-
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <img src={image} className="edinburghImage" style={{ width: 600, height: 400 }} alt="edinburgh" />
-
+                    <OverlayTrigger trigger="hover" placement="right" overlay={popover}>
+                         <img src={image} ref={target} onClick={() => setShow(!show)} className="newYorkImage" style={{ width: 600, height: 400 }} alt="New York City"/>
+                    </OverlayTrigger>
                     <p>
                         This is a new React app - pretty cool!
-                </p>
+                    </p>
 
                     <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer" style={{ paddingBottom: 30 }}>James McConnell</a>
                 </body>
